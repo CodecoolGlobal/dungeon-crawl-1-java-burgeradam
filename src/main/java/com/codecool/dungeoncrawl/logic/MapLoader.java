@@ -4,19 +4,15 @@ import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
 public class MapLoader {
-
-    static File topLeftMap = new File ("src/main/resources.txt"); // 0
-    static File topRightMap = new File ("src/main/resources.txt"); // 1
-    static File bottomRightMap = new File ("src/main/resources.txt"); // 2
-    static File bottomLeftMap = new File ("src/main/resources.txt"); // 3
-    static HashMap<Integer, mapPart> mapPosition;
-    static mapPart playersMap;
-    static mapPart doorMap;
+    static HashMap<Integer, mapPart> mapPosition = new HashMap<>();
+    static mapPart playersMap = null;
+    static mapPart doorMap = null;
     static int mapRowsCount = 26;   // height
     static int mapColCount = 42;    // width
     static int mapVariationsCount = 3;
@@ -84,6 +80,9 @@ public class MapLoader {
                         case 'd':
                             cell.setType(CellType.DOOR);
                             break;
+                        case 'g':  // ez csak ideiglenes!!!
+                            cell.setType(CellType.WATER);
+                            break;
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
@@ -101,28 +100,39 @@ public class MapLoader {
         Random random = new Random();
         playersMap = mapPosition.get( random.nextInt(3) );
         doorMap = mapPosition.get( random.nextInt(3) );
+        while (doorMap == playersMap) doorMap = mapPosition.get( random.nextInt(3) );
 
         String[][] mapStringMatrix = new String[4][mapRowsCount];
         String fileName = "";
         for (int position: mapPosition.keySet()) {
-            if (playersMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "p";
-            if    (doorMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "d";
-            else fileName = mapPosition.get(position).getFilePrefix() + random.nextInt(mapVariationsCount);
-            Scanner fileReader = new Scanner(fileName);
-            int i = 0;
-            while (fileReader.hasNext()){
-                mapStringMatrix[position][i] = fileReader.nextLine();
-                i++;
+            if (playersMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "p" + ".txt";
+            // if (doorMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "d" + ".txt";
+                // else fileName = mapPosition.get(position).getFilePrefix() + random.nextInt(mapVariationsCount) + ".txt";
+            else fileName = mapPosition.get(position).getFilePrefix() + "1" + ".txt";
+
+            try {
+                File fileObject = new File(fileName);
+                Scanner fileReader = new Scanner(fileObject);
+                int i = 0;
+                while (fileReader.hasNext()) {
+                    String str = fileReader.nextLine();
+                    mapStringMatrix[position][i] = str;
+                    i++;
+                }
+                fileReader.close();
             }
-            fileReader.close();
+            catch (FileNotFoundException e){
+                throw new RuntimeException(e.getMessage());
+            }
         }
+
 
         String[] mapStringVector = new String[mapRowsCount];
         for (int i=0; i < mapRowsCount/2; i++) {
             mapStringVector[i] = mapStringMatrix[0][i];
             mapStringVector[i] += mapStringMatrix[1][i];
-            mapStringVector[i+mapRowsCount/2] += mapStringMatrix[2][i+mapRowsCount/2];
-            mapStringVector[i+mapRowsCount/2] += mapStringMatrix[3][i+mapRowsCount/2];
+            mapStringVector[i+mapRowsCount/2] = mapStringMatrix[2][i];
+            mapStringVector[i+mapRowsCount/2] += mapStringMatrix[3][i];
         }
         return mapStringVector;
     }
