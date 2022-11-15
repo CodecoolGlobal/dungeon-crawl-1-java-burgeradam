@@ -15,7 +15,4 @@ public enum mapPart {
     mapPart(String filePrefix){
         this.filePrefix = filePrefix;
     }
-
-
-
 }
