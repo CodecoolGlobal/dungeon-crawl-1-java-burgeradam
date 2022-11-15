@@ -32,6 +32,10 @@ public class GameMap {
         return player;
     }
 
+    public boolean isOnAllowedTile(Cell cell) {
+            return !cell.getType().equals(CellType.WALL) && !cell.getType().equals(CellType.EMPTY);
+    }
+
     public int getWidth() {
         return width;
     }

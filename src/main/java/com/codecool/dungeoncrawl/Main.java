@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -22,6 +23,7 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label key = new Label();
 
     public static void main(String[] args) {
         launch(args);
@@ -35,6 +37,8 @@ public class Main extends Application {
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
+        ui.add(new Label("Key"), 0, 1);
+        ui.add(key, 1, 1);
 
         BorderPane borderPane = new BorderPane();
 
@@ -51,21 +55,35 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
+        Player playerPlace = map.getPlayer();
+        Cell playerActualCell = playerPlace.getCell();
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(0, -1);
+                Cell nextCell = playerActualCell.getNeighbor(0, -1);
+                if (map.isOnAllowedTile(nextCell)) {
+                    map.getPlayer().move(0, -1);
+                }
                 refresh();
                 break;
             case DOWN:
-                map.getPlayer().move(0, 1);
+                nextCell = playerActualCell.getNeighbor(0, 1);
+                if (map.isOnAllowedTile(nextCell)) {
+                    map.getPlayer().move(0, 1);
+                }
                 refresh();
                 break;
             case LEFT:
-                map.getPlayer().move(-1, 0);
+                nextCell = playerActualCell.getNeighbor(-1, 0);
+                if (map.isOnAllowedTile(nextCell)) {
+                    map.getPlayer().move(-1, 0);
+                }
                 refresh();
                 break;
             case RIGHT:
-                map.getPlayer().move(1,0);
+                nextCell = playerActualCell.getNeighbor(1, 0);
+                if (map.isOnAllowedTile(nextCell)) {
+                    map.getPlayer().move(1,0);
+                }
                 refresh();
                 break;
         }
