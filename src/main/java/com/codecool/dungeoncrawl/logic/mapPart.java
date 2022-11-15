@@ -1,10 +1,10 @@
 package com.codecool.dungeoncrawl.logic;
 
 public enum mapPart {
-    topLeft ("map_tl_"),
-    topRight ("map_tr_"),
-    bottomRight ("map_br_"),
-    bottomLeft ("map_bl_");
+    topLeft ("src/main/resources/map_tl_"),
+    topRight ("src/main/resources/map_tr_"),
+    bottomRight ("src/main/resources/map_br_"),
+    bottomLeft ("src/main/resources/map_bl_");
 
     public String getFilePrefix() {
         return filePrefix;
@@ -15,7 +15,4 @@ public enum mapPart {
     mapPart(String filePrefix){
         this.filePrefix = filePrefix;
     }
-
-
-
 }
