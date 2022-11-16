@@ -17,7 +17,7 @@ public class MapLoader {
     static mapPart doorMap = null;
     static int mapRowCount = 26;   // height
     static int mapColCount = 42;    // width
-    static int mapVariationsCount = 3;
+    static int mapVariationsCount = 2;
     static int halfWidth;
     static int halfHeight;
     static HashMap<Character, CellType> charToCellType;
@@ -25,8 +25,8 @@ public class MapLoader {
     static {
         mapPosition.put(0, mapPart.topLeft);
         mapPosition.put(1, mapPart.topRight);
-        mapPosition.put(2, mapPart.bottomRight);
-        mapPosition.put(3, mapPart.bottomLeft);
+        mapPosition.put(2, mapPart.bottomLeft);
+        mapPosition.put(3, mapPart.bottomRight);
 
         halfWidth = mapColCount / 2;
         halfHeight = mapRowCount /2;
@@ -47,7 +47,6 @@ public class MapLoader {
         charToCellType.put('d', CellType.DOOR);
         charToCellType.put('g', CellType.WATER); // This is temponary!!!
         charToCellType.put('@', CellType.FLOOR);
-
     }
 
     public static GameMap loadMap() {
@@ -151,8 +150,8 @@ public class MapLoader {
         for (int position: mapPosition.keySet()) {
             if (playersMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "p" + ".txt";
             // if (doorMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "d" + ".txt";
-                // else fileName = mapPosition.get(position).getFilePrefix() + random.nextInt(mapVariationsCount) + ".txt";
-            else fileName = mapPosition.get(position).getFilePrefix() + "1" + ".txt";
+             else fileName = mapPosition.get(position).getFilePrefix() + (random.nextInt(mapVariationsCount) + 1) + ".txt";
+            // else fileName = mapPosition.get(position).getFilePrefix() + "1" + ".txt";
 
             try {
                 File fileObject = new File(fileName);
