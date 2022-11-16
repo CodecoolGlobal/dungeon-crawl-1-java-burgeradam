@@ -47,4 +47,8 @@ public class GameMap {
     public int getHeight() {
         return height;
     }
+
+    public boolean isEnemy(Cell nextCell) {
+        return nextCell.getType().equals(CellType.GHOST) || nextCell.getType().equals(CellType.SKELETON);
+    }
 }

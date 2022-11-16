@@ -36,7 +36,7 @@ public class MapLoader {
         charToCellType.put('#', CellType.WALL);
         charToCellType.put('.', CellType.FLOOR);
         charToCellType.put('k', CellType.KEY);
-        charToCellType.put('s', CellType.FLOOR);
+        charToCellType.put('s', CellType.SKELETON);
         charToCellType.put('q', CellType.SWORD);
         charToCellType.put('b', CellType.HEAL1);
         charToCellType.put('c', CellType.HEAL2);

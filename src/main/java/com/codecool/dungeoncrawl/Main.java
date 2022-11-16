@@ -62,6 +62,8 @@ public class Main extends Application {
                 Cell nextCell = playerActualCell.getNeighbor(0, -1);
                 if (map.isOnAllowedTile(nextCell)) {
                     map.getPlayer().move(0, -1);
+                } else if (map.isEnemy(nextCell)) {
+                    
                 }
                 refresh();
                 break;
