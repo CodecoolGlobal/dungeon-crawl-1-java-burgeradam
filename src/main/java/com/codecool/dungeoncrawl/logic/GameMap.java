@@ -64,6 +64,7 @@ public class GameMap {
             Cell skeletonCell = skeleton.getCell();
             Cell nextSkeletonCell = skeletonCell.getNeighbor(coordinate.getX(), coordinate.getY());
             if (isAllowedOnTile(nextSkeletonCell)) {
+                skeletonCell.setType(CellType.FLOOR);
                 skeleton.move(coordinate.getX(), coordinate.getY());
             }
         }
