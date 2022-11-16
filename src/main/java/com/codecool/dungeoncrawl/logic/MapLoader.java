@@ -92,8 +92,6 @@ public class MapLoader {
             if (playersMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "p" + ".txt";
             else if (doorMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "d" + ".txt";
                     else fileName = mapPosition.get(position).getFilePrefix() + (random.nextInt(mapVariationsCount) + 1) + ".txt";
-            // else fileName = mapPosition.get(position).getFilePrefix() + "1" + ".txt";
-
             try {
                 File fileObject = new File(fileName);
                 Scanner fileReader = new Scanner(fileObject);
@@ -113,7 +111,6 @@ public class MapLoader {
                 throw new RuntimeException(e.getMessage());
             }
         }
-
 
         String[] mapStringVector = new String[mapRowCount];
         for (int i = 0; i < mapRowCount /2; i++) {
