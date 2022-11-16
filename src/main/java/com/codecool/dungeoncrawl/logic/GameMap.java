@@ -51,4 +51,10 @@ public class GameMap {
     public boolean isEnemy(Cell nextCell) {
         return nextCell.getType().equals(CellType.GHOST) || nextCell.getType().equals(CellType.SKELETON);
     }
+
+    public String fight(Cell cell) {
+        String name = cell.getType().name();
+        System.out.println(name);
+        return name;
+    }
 }

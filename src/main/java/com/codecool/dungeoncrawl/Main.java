@@ -63,7 +63,7 @@ public class Main extends Application {
                 if (map.isOnAllowedTile(nextCell)) {
                     map.getPlayer().move(0, -1);
                 } else if (map.isEnemy(nextCell)) {
-                    
+                    map.fight(nextCell);
                 }
                 refresh();
                 break;
@@ -71,6 +71,8 @@ public class Main extends Application {
                 nextCell = playerActualCell.getNeighbor(0, 1);
                 if (map.isOnAllowedTile(nextCell)) {
                     map.getPlayer().move(0, 1);
+                } else if (map.isEnemy(nextCell)) {
+                    map.fight(nextCell);
                 }
                 refresh();
                 break;
@@ -78,6 +80,8 @@ public class Main extends Application {
                 nextCell = playerActualCell.getNeighbor(-1, 0);
                 if (map.isOnAllowedTile(nextCell)) {
                     map.getPlayer().move(-1, 0);
+                } else if (map.isEnemy(nextCell)) {
+                    map.fight(nextCell);
                 }
                 refresh();
                 break;
@@ -85,6 +89,8 @@ public class Main extends Application {
                 nextCell = playerActualCell.getNeighbor(1, 0);
                 if (map.isOnAllowedTile(nextCell)) {
                     map.getPlayer().move(1,0);
+                } else if (map.isEnemy(nextCell)) {
+                    map.fight(nextCell);
                 }
                 refresh();
                 break;
