@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 
@@ -34,9 +35,9 @@ public class GameMap {
     }
 
     public boolean isOnAllowedTile(Cell cell) {
-        return !cell.getType().equals(CellType.WALL) &&
-                !cell.getType().equals(CellType.EMPTY) &&
-                !(cell.getActor() instanceof Skeleton);
+        return !cell.getType().equals(CellType.WALL) && !cell.getType().equals(CellType.TREE) &&
+                !cell.getType().equals(CellType.EMPTY) && !cell.getType().equals(CellType.WATER) &&
+                !(cell.getActor() instanceof Skeleton) && !(cell.getActor() instanceof Ghost);
     }
 
     public int getWidth() {
