@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.util.Utils;
@@ -122,7 +123,8 @@ public class MapLoader {
                             cell.setType(CellType.DOOR);
                             break;
                         case 'g':  // ez csak ideiglenes!!!
-                            cell.setType(CellType.WATER);
+                            cell.setType(CellType.FLOOR);
+                            new Ghost(cell);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
