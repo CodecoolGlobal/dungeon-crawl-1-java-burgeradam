@@ -57,31 +57,32 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         Player playerPlace = map.getPlayer();
         Cell playerActualCell = playerPlace.getCell();
+        map.moveSkeleton();
         switch (keyEvent.getCode()) {
             case UP:
                 Cell nextCell = playerActualCell.getNeighbor(0, -1);
-                if (map.isOnAllowedTile(nextCell)) {
+                if (map.isAllowedOnTile(nextCell)) {
                     map.getPlayer().move(0, -1);
                 }
                 refresh();
                 break;
             case DOWN:
                 nextCell = playerActualCell.getNeighbor(0, 1);
-                if (map.isOnAllowedTile(nextCell)) {
+                if (map.isAllowedOnTile(nextCell)) {
                     map.getPlayer().move(0, 1);
                 }
                 refresh();
                 break;
             case LEFT:
                 nextCell = playerActualCell.getNeighbor(-1, 0);
-                if (map.isOnAllowedTile(nextCell)) {
+                if (map.isAllowedOnTile(nextCell)) {
                     map.getPlayer().move(-1, 0);
                 }
                 refresh();
                 break;
             case RIGHT:
                 nextCell = playerActualCell.getNeighbor(1, 0);
-                if (map.isOnAllowedTile(nextCell)) {
+                if (map.isAllowedOnTile(nextCell)) {
                     map.getPlayer().move(1,0);
                 }
                 refresh();

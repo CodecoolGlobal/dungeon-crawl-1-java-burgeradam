@@ -70,7 +70,7 @@ public class MapLoader {
                     cell.setType( charToCellType.get(line.charAt(x)) );
                     switch (line.charAt(x)){
                         case 's':
-                            new Skeleton(cell);
+                            map.addSkeleton(new Skeleton(cell));
                             break;
                         case '@':
                             map.setPlayer(new Player(cell));

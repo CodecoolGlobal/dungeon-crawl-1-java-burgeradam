@@ -2,6 +2,10 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.util.Coordinate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameMap {
     private int width;
@@ -9,6 +13,7 @@ public class GameMap {
     private Cell[][] cells;
 
     private Player player;
+    private List<Skeleton> skeletons = new ArrayList<>();
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -33,10 +38,33 @@ public class GameMap {
         return player;
     }
 
-    public boolean isOnAllowedTile(Cell cell) {
+    public void addSkeleton(Skeleton skeleton) {
+        skeletons.add(skeleton);
+    }
+
+    public boolean isAllowedOnTile(Cell cell) {
         return !cell.getType().equals(CellType.WALL) &&
                 !cell.getType().equals(CellType.EMPTY) &&
+                !cell.getType().equals(CellType.WATER) &&
+                !cell.getType().equals(CellType.TREE) &&
                 !(cell.getActor() instanceof Skeleton);
+    }
+
+    public void moveSkeleton() {
+        int minValue = -1;
+        int maxValue = 1;
+        for (Skeleton skeleton : skeletons) {
+            Coordinate coordinate = new Coordinate();
+            double moveDirection = Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
+            coordinate.setX((int) moveDirection);
+            moveDirection = Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
+            coordinate.setY((int) moveDirection);
+            Cell skeletonCell = skeleton.getCell();
+            Cell nextSkeletonCell = skeletonCell.getNeighbor(coordinate.getX(), coordinate.getY());
+            if (isAllowedOnTile(nextSkeletonCell)) {
+                skeleton.move(coordinate.getX(), coordinate.getY());
+            }
+        }
     }
 
     public int getWidth() {
