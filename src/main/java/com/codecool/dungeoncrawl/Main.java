@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
@@ -15,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -57,45 +59,62 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         Player playerPlace = map.getPlayer();
         Cell playerActualCell = playerPlace.getCell();
+        int moveToX = 0;
+        int moveToY = 0;
         map.moveSkeleton();
         switch (keyEvent.getCode()) {
             case UP:
-                Cell nextCell = playerActualCell.getNeighbor(0, -1);
-                if (map.isAllowedOnTile(nextCell)) {
-                    map.getPlayer().move(0, -1);
-                } else if (map.isEnemy(nextCell)) {
-                    map.fight(nextCell);
-                }
-                refresh();
+                moveToX = 0;
+                moveToY = -1;
                 break;
             case DOWN:
-                nextCell = playerActualCell.getNeighbor(0, 1);
-                if (map.isAllowedOnTile(nextCell)) {
-                    map.getPlayer().move(0, 1);
-                } else if (map.isEnemy(nextCell)) {
-                    map.fight(nextCell);
-                }
-                refresh();
+                moveToX = 0;
+                moveToY = 1;
                 break;
             case LEFT:
-                nextCell = playerActualCell.getNeighbor(-1, 0);
-                if (map.isAllowedOnTile(nextCell)) {
-                    map.getPlayer().move(-1, 0);
-                } else if (map.isEnemy(nextCell)) {
-                    map.fight(nextCell);
-                }
-                refresh();
+                moveToX = -1;
+                moveToY = 0;
+
                 break;
             case RIGHT:
-                nextCell = playerActualCell.getNeighbor(1, 0);
-                if (map.isAllowedOnTile(nextCell)) {
-                    map.getPlayer().move(1,0);
-                } else if (map.isEnemy(nextCell)) {
-                    map.fight(nextCell);
-                }
-                refresh();
+                moveToX = 1;
+                moveToY = 0;
                 break;
         }
+        Cell nextCell = playerActualCell.getNeighbor(moveToX,moveToY);
+        if (map.isAllowedOnTile(nextCell)) {
+            map.getPlayer().move(moveToX, moveToY);
+        }
+        else {
+            if (map.isEnemy(nextCell)) {
+
+            }
+            if (map.isDoor(nextCell)){
+/*
+                Stage messageWindow = new Stage();
+
+                GridPane ui = new GridPane();
+                ui.setPrefWidth(200);
+                ui.setPadding(new Insets(10));
+                ui.add(new Label("Health: "), 0, 0);
+
+                BorderPane bPane = new BorderPane();
+                bPane.setCenter(canvas);
+                bPane.setRight(ui);
+
+                Scene scene = new Scene(bPane);
+                messageWindow.setScene(scene);
+                refresh();
+                scene.setOnKeyPressed(this::onKeyPressed);
+
+                messageWindow.setTitle("Hello there!");
+                messageWindow.show();
+ű
+*/
+                map = MapLoader.loadMap();
+            }
+        }
+        refresh();
     }
 
     private void refresh() {

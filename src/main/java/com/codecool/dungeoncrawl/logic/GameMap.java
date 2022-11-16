@@ -48,6 +48,7 @@ public class GameMap {
                 !cell.getType().equals(CellType.EMPTY) &&
                 !cell.getType().equals(CellType.WATER) &&
                 !cell.getType().equals(CellType.TREE) &&
+                !cell.getType().equals(CellType.DOOR) &&
                 !(cell.getActor() instanceof Skeleton &&
                 !(cell.getActor() instanceof Ghost));
     }
@@ -80,6 +81,10 @@ public class GameMap {
 
     public boolean isEnemy(Cell nextCell) {
         return nextCell.getType().equals(CellType.GHOST) || nextCell.getType().equals(CellType.SKELETON);
+    }
+
+    public boolean isDoor(Cell nextCell) {
+        return nextCell.getType().equals(CellType.DOOR);
     }
 
     public String fight(Cell cell) {

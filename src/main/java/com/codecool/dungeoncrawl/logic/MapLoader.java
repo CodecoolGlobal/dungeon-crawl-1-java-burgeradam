@@ -17,7 +17,7 @@ public class MapLoader {
     static mapPart doorMap = null;
     static int mapRowCount = 26;   // height
     static int mapColCount = 42;    // width
-    static int mapVariationsCount = 2;
+    static int mapVariationsCount = 3;
     static int halfWidth;
     static int halfHeight;
     static HashMap<Character, CellType> charToCellType;
@@ -50,13 +50,7 @@ public class MapLoader {
     }
 
     public static GameMap loadMap() {
-/*
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
-        Scanner scanner = new Scanner(is);
-        int width = scanner.nextInt();
-        int height = scanner.nextInt();
-        scanner.nextLine(); // empty line
-*/
+
         String[] mapStringVector = mapFilesRandomReader();
 
         int width = mapColCount;
@@ -80,62 +74,6 @@ public class MapLoader {
                             break;
                     }
                     if (charToCellType.get(line.charAt(x)) == null) throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
-
-
-/*
-                    switch (line.charAt(x)) {
-                        case ' ':
-                            cell.setType(CellType.EMPTY);
-                            break;
-                        case '#':
-                            cell.setType(CellType.WALL);
-                            break;
-                        case '.':
-                            cell.setType(CellType.FLOOR);
-                            break;
-                        case 'k':
-                            cell.setType(CellType.KEY);
-                            break;
-                        case 's':
-                            cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
-                            break;
-                        case 'q':
-                            cell.setType(CellType.SWORD);
-                            break;
-                        case 'b':
-                            cell.setType(CellType.HEAL1);
-                            break;
-                        case 'c':
-                            cell.setType(CellType.HEAL2);
-                            break;
-                        case 'm':
-                            cell.setType(CellType.HEAL3);
-                            break;
-                        case 'r':
-                            cell.setType(CellType.SHIELD);
-                            break;
-                        case 't':
-                            cell.setType(CellType.TREE);
-                            break;
-                        case 'w':
-                            cell.setType(CellType.WATER);
-                            break;
-                        case 'd':
-                            cell.setType(CellType.DOOR);
-                            break;
-                        case 'g':  // ez csak ideiglenes!!!
-                            cell.setType(CellType.FLOOR);
-                            new Ghost(cell);
-                            break;
-                        case '@':
-                            cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
-                            break;
-                        default:
-                            throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
-                    }
-*/
                 }
             }
         }
@@ -152,8 +90,8 @@ public class MapLoader {
         String fileName = "";
         for (int position: mapPosition.keySet()) {
             if (playersMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "p" + ".txt";
-            // if (doorMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "d" + ".txt";
-             else fileName = mapPosition.get(position).getFilePrefix() + (random.nextInt(mapVariationsCount) + 1) + ".txt";
+            else if (doorMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "d" + ".txt";
+                    else fileName = mapPosition.get(position).getFilePrefix() + (random.nextInt(mapVariationsCount) + 1) + ".txt";
             // else fileName = mapPosition.get(position).getFilePrefix() + "1" + ".txt";
 
             try {
