@@ -36,7 +36,7 @@ public class MapLoader {
         charToCellType.put('#', CellType.WALL);
         charToCellType.put('.', CellType.FLOOR);
         charToCellType.put('k', CellType.KEY);
-        charToCellType.put('s', CellType.FLOOR);
+        charToCellType.put('s', CellType.SKELETON);
         charToCellType.put('q', CellType.SWORD);
         charToCellType.put('b', CellType.HEAL1);
         charToCellType.put('c', CellType.HEAL2);
@@ -45,7 +45,7 @@ public class MapLoader {
         charToCellType.put('t', CellType.TREE);
         charToCellType.put('w', CellType.WATER);
         charToCellType.put('d', CellType.DOOR);
-        charToCellType.put('g', CellType.WATER); // This is temponary!!!
+        charToCellType.put('g', CellType.GHOST);
         charToCellType.put('@', CellType.FLOOR);
     }
 
@@ -71,6 +71,9 @@ public class MapLoader {
                     switch (line.charAt(x)){
                         case 's':
                             map.addSkeleton(new Skeleton(cell));
+                            break;
+                        case 'g':
+                            new Ghost(cell);
                             break;
                         case '@':
                             map.setPlayer(new Player(cell));

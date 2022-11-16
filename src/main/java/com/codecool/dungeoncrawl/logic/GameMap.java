@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.util.Coordinate;
@@ -47,7 +48,8 @@ public class GameMap {
                 !cell.getType().equals(CellType.EMPTY) &&
                 !cell.getType().equals(CellType.WATER) &&
                 !cell.getType().equals(CellType.TREE) &&
-                !(cell.getActor() instanceof Skeleton);
+                !(cell.getActor() instanceof Skeleton &&
+                !(cell.getActor() instanceof Ghost));
     }
 
     public void moveSkeleton() {
@@ -73,5 +75,9 @@ public class GameMap {
 
     public int getHeight() {
         return height;
+    }
+
+    public boolean isEnemy(Cell nextCell) {
+        return nextCell.getType().equals(CellType.GHOST) || nextCell.getType().equals(CellType.SKELETON);
     }
 }
