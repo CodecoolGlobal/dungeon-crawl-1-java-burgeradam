@@ -12,7 +12,8 @@ public enum CellType {
     SWORD("sword"),
     KEY("key"),
     SHIELD("shield"),
-    WALL("wall");
+    WALL("wall"),
+    GHOST("ghost");
 
     private final String tileName;
 
