@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.util.Utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,15 +15,42 @@ public class MapLoader {
     static HashMap<Integer, mapPart> mapPosition = new HashMap<>();
     static mapPart playersMap = null;
     static mapPart doorMap = null;
-    static int mapRowsCount = 26;   // height
+    static int mapRowCount = 26;   // height
     static int mapColCount = 42;    // width
     static int mapVariationsCount = 3;
+    static int halfWidth;
+    static int halfHeight;
+    static HashMap<Character, CellType> charToCellType;
 
-    public static GameMap loadMap() {
+    static {
         mapPosition.put(0, mapPart.topLeft);
         mapPosition.put(1, mapPart.topRight);
         mapPosition.put(2, mapPart.bottomRight);
         mapPosition.put(3, mapPart.bottomLeft);
+
+        halfWidth = mapColCount / 2;
+        halfHeight = mapRowCount /2;
+
+        charToCellType = new HashMap<>();
+        charToCellType.put(' ', CellType.EMPTY);
+        charToCellType.put('#', CellType.WALL);
+        charToCellType.put('.', CellType.FLOOR);
+        charToCellType.put('k', CellType.KEY);
+        charToCellType.put('s', CellType.FLOOR);
+        charToCellType.put('q', CellType.SWORD);
+        charToCellType.put('b', CellType.HEAL1);
+        charToCellType.put('c', CellType.HEAL2);
+        charToCellType.put('m', CellType.HEAL3);
+        charToCellType.put('r', CellType.SHIELD);
+        charToCellType.put('t', CellType.TREE);
+        charToCellType.put('w', CellType.WATER);
+        charToCellType.put('d', CellType.DOOR);
+        charToCellType.put('g', CellType.WATER); // This is temponary!!!
+        charToCellType.put('@', CellType.FLOOR);
+
+    }
+
+    public static GameMap loadMap() {
 /*
         InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
         Scanner scanner = new Scanner(is);
@@ -33,13 +61,26 @@ public class MapLoader {
         String[] mapStringVector = mapFilesRandomReader();
 
         int width = mapColCount;
-        int height = mapRowsCount;
+        int height = mapRowCount;
         GameMap map = new GameMap(width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
             String line = mapStringVector[y];
             for (int x = 0; x < width; x++) {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);
+                    cell.setType( charToCellType.get(line.charAt(x)) );
+                    switch (line.charAt(x)){
+                        case 's':
+                            new Skeleton(cell);
+                            break;
+                        case '@':
+                            map.setPlayer(new Player(cell));
+                            break;
+                    }
+                    if (charToCellType.get(line.charAt(x)) == null) throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
+
+
+/*
                     switch (line.charAt(x)) {
                         case ' ':
                             cell.setType(CellType.EMPTY);
@@ -92,6 +133,7 @@ public class MapLoader {
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
+*/
                 }
             }
         }
@@ -104,7 +146,7 @@ public class MapLoader {
         doorMap = mapPosition.get( random.nextInt(3) );
         while (doorMap == playersMap) doorMap = mapPosition.get( random.nextInt(3) );
 
-        String[][] mapStringMatrix = new String[4][mapRowsCount];
+        String[][] mapStringMatrix = new String[4][mapRowCount];
         String fileName = "";
         for (int position: mapPosition.keySet()) {
             if (playersMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "p" + ".txt";
@@ -118,6 +160,10 @@ public class MapLoader {
                 int i = 0;
                 while (fileReader.hasNext()) {
                     String str = fileReader.nextLine();
+                    int strWidth = str.length();
+                    if (str.length() < halfWidth) {
+                        str = Utils.addSpacesToString(str, halfWidth);
+                    }
                     mapStringMatrix[position][i] = str;
                     i++;
                 }
@@ -129,13 +175,14 @@ public class MapLoader {
         }
 
 
-        String[] mapStringVector = new String[mapRowsCount];
-        for (int i=0; i < mapRowsCount/2; i++) {
+        String[] mapStringVector = new String[mapRowCount];
+        for (int i = 0; i < mapRowCount /2; i++) {
             mapStringVector[i] = mapStringMatrix[0][i];
             mapStringVector[i] += mapStringMatrix[1][i];
-            mapStringVector[i+mapRowsCount/2] = mapStringMatrix[2][i];
-            mapStringVector[i+mapRowsCount/2] += mapStringMatrix[3][i];
+            mapStringVector[i+ mapRowCount /2] = mapStringMatrix[2][i];
+            mapStringVector[i+ mapRowCount /2] += mapStringMatrix[3][i];
         }
         return mapStringVector;
     }
+
 }
