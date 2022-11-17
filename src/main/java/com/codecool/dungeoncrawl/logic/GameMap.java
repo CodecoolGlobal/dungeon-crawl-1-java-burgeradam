@@ -176,5 +176,6 @@ public class GameMap {
 
         System.out.println("Enemy Stats:" + enemyHealth +" "+ enemyAttack +" "+ enemyDefense);
         System.out.println("Player Stats:" + playerHealth +" "+ playerAttack +" "+ playerDefense);
+        System.out.println(enemyPosition.getType());
     }
 }
