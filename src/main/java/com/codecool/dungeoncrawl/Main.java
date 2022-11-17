@@ -19,6 +19,21 @@ import javafx.stage.Stage;
 public class Main extends Application {
     GridPane ui = new GridPane();
     GameMap map = MapLoader.loadMap();
+    private class SkeletonThread extends Thread {
+        @Override
+        public void run() {
+            while (!Thread.currentThread().isInterrupted()) {
+                map.moveSkeleton();
+                map.moveGhost();
+                refresh();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -51,45 +66,72 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+        SkeletonThread skeletonThread = new SkeletonThread();
+        skeletonThread.start();
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
         Player playerPlace = map.getPlayer();
         Cell playerActualCell = playerPlace.getCell();
+        int moveToX = 0;
+        int moveToY = 0;
         switch (keyEvent.getCode()) {
             case UP:
-                Cell nextCell = playerActualCell.getNeighbor(0, -1);
+                moveToX = 0;
+                moveToY = -1;
                 Player.pickUp(playerActualCell, ui);
-                if (map.isOnAllowedTile(nextCell)) {
-                    map.getPlayer().move(0, -1);
-                }
-                refresh();
                 break;
             case DOWN:
-                nextCell = playerActualCell.getNeighbor(0, 1);
                 Player.pickUp(playerActualCell, ui);
-                if (map.isOnAllowedTile(nextCell)) {
-                    map.getPlayer().move(0, 1);
-                }
-                refresh();
+                moveToX = 0;
+                moveToY = 1;
                 break;
             case LEFT:
                 Player.pickUp(playerActualCell, ui);
-                nextCell = playerActualCell.getNeighbor(-1, 0);
-                if (map.isOnAllowedTile(nextCell)) {
-                    map.getPlayer().move(-1, 0);
-                }
-                refresh();
+                moveToX = -1;
+                moveToY = 0;
                 break;
             case RIGHT:
                 Player.pickUp(playerActualCell, ui);
-                nextCell = playerActualCell.getNeighbor(1, 0);
-                if (map.isOnAllowedTile(nextCell)) {
-                    map.getPlayer().move(1,0);
-                }
-                refresh();
+                moveToX = 1;
+                moveToY = 0;
                 break;
+
         }
+
+        Cell nextCell = playerActualCell.getNeighbor(moveToX, moveToY);
+        if (playerPlace.isAllowedOnTile(nextCell)) {
+            map.getPlayer().move(moveToX, moveToY);
+        } else {
+            if (map.isEnemy(nextCell)) {
+                map.fight(nextCell);
+            }
+            if (map.isDoor(nextCell)) {
+/*
+                Stage messageWindow = new Stage();
+
+                GridPane ui = new GridPane();
+                ui.setPrefWidth(200);
+                ui.setPadding(new Insets(10));
+                ui.add(new Label("Health: "), 0, 0);
+
+                BorderPane bPane = new BorderPane();
+                bPane.setCenter(canvas);
+                bPane.setRight(ui);
+
+                Scene scene = new Scene(bPane);
+                messageWindow.setScene(scene);
+                refresh();
+                scene.setOnKeyPressed(this::onKeyPressed);
+
+                messageWindow.setTitle("Hello there!");
+                messageWindow.show();
+ű
+*/
+                map = MapLoader.loadMap();
+            }
+        }
+        refresh();
     }
 
     private void refresh() {

@@ -16,6 +16,9 @@ public class Player extends Actor {
 
     public Player(Cell cell) {
         super(cell);
+        this.setHealth(10);
+        this.setAttack(1);
+        this.setDefense(1);
     }
 
     public static ArrayList<Items> getInventory() {
@@ -50,7 +53,6 @@ public class Player extends Actor {
         } else if(cell.getTileName().equals("heal1")) {
 
             Healer heal1 = new Healer("heal1");
-            heal1.heal();
 
         }
     }
