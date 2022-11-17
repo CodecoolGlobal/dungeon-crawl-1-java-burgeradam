@@ -15,13 +15,11 @@ public class Player extends Actor {
 
     public Player(Cell cell) {
         super(cell);
-<<<<<<< Updated upstream
+
         this.setHealth(10);
         this.setAttack(2);
-=======
         setHealth(10);
         this.setAttack(1);
->>>>>>> Stashed changes
         this.setDefense(1);
     }
 
