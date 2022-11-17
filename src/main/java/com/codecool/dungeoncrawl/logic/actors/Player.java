@@ -54,8 +54,17 @@ public class Player extends Actor {
             Healer heal1 = new Healer("heal1");
 
         }
+
+
     }
 
+    public Key getKey(){
+        Key out = null;
+        for (Items item: inventory){
+            if (item instanceof Key) out = (Key)item;
+        }
+        return out;
+    }
 
         @Override
         public String getTileName() {
