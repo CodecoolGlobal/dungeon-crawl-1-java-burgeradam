@@ -23,6 +23,7 @@ public class Main extends Application {
         public void run() {
             while (!Thread.currentThread().isInterrupted()) {
                 map.moveSkeleton();
+                map.moveGhost();
                 refresh();
                 try {
                     Thread.sleep(500);

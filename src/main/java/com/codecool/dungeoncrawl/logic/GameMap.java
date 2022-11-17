@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.util.Coordinate;
@@ -14,6 +15,7 @@ public class GameMap {
 
     private Player player;
     private List<Skeleton> skeletons = new ArrayList<>();
+    private List<Ghost> ghosts = new ArrayList<>();
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -42,6 +44,10 @@ public class GameMap {
         skeletons.add(skeleton);
     }
 
+    public void addGhost(Ghost ghost) {
+        ghosts.add(ghost);
+    }
+
     public void moveSkeleton() {
         for (Skeleton skeleton : skeletons) {
             Coordinate coordinate = new Coordinate();
@@ -52,6 +58,20 @@ public class GameMap {
             if (skeleton.isAllowedOnTile(nextSkeletonCell)) {
                 skeletonCell.setType(CellType.FLOOR);
                 skeleton.move(coordinate.getX(), coordinate.getY());
+            }
+        }
+    }
+
+    public void moveGhost() {
+        for (Ghost ghost : ghosts) {
+            Coordinate coordinate = new Coordinate();
+            coordinate.setX((int) getMoveDirection());
+            coordinate.setY((int) getMoveDirection());
+            Cell ghostCell = ghost.getCell();
+            Cell nextGhostCell = ghostCell.getNeighbor(coordinate.getX(), coordinate.getY());
+            if (ghost.isAllowedOnTile(nextGhostCell)) {
+                ghostCell.setType(CellType.FLOOR);
+                ghost.move(coordinate.getX(), coordinate.getY());
             }
         }
     }

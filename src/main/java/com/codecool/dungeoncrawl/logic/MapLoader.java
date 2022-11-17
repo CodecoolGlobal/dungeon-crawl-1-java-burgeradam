@@ -67,7 +67,7 @@ public class MapLoader {
                             map.addSkeleton(new Skeleton(cell));
                             break;
                         case 'g':
-                            new Ghost(cell);
+                            map.addGhost(new Ghost(cell));
                             break;
                         case '@':
                             map.setPlayer(new Player(cell));
