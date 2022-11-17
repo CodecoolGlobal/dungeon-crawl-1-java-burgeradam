@@ -1,11 +1,11 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -25,8 +25,10 @@ public class Main extends Application {
         @Override
         public void run() {
             while (!Thread.currentThread().isInterrupted()) {
-                map.moveSkeleton();
-                map.moveGhost();
+                map.enemyMove(Skeleton.class);
+                map.enemyMove(Ghost.class);
+//                map.moveSkeleton();
+//                map.moveGhost();
                 refresh();
                 try {
                     Thread.sleep(500);
@@ -102,7 +104,7 @@ public class Main extends Application {
         }
 
         Cell nextCell = playerActualCell.getNeighbor(moveToX, moveToY);
-        if (playerPlace.isAllowedOnTile(nextCell)) {
+        if (nextCell.isAllowedOn()) {
             map.getPlayer().move(moveToX, moveToY);
         } else {
             if (map.isEnemy(nextCell)) {

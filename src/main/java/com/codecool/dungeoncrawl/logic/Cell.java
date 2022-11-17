@@ -1,6 +1,9 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Ghost;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 
 public class Cell implements Drawable {
     private CellType type;
@@ -46,5 +49,15 @@ public class Cell implements Drawable {
 
     public int getY() {
         return y;
+    }
+    public boolean isAllowedOn() {
+        return type != CellType.WALL &&
+                type != CellType.EMPTY &&
+                type != CellType.WATER &&
+                type != CellType.TREE &&
+                type != CellType.DOOR &&
+                !(actor instanceof Skeleton) &&
+                !(actor instanceof Ghost) &&
+                !(actor instanceof Player);
     }
 }
