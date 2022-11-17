@@ -33,13 +33,18 @@ public class Player extends Actor {
             cell.setType(CellType.FLOOR);
             ui.add(new Label("sword"), 0, uiCounter);
             uiCounter++;
+            Actor player = cell.getActor();
+            player.setAttack(player.getAttack() + 1);
+            
 
         } else if (cell.getTileName().equals("shield")) {
             Items shield = new Shield();
             inventory.add(shield);
             cell.setType(CellType.FLOOR);
             ui.add(new Label("shield"), 0, uiCounter);
-            uiCounter++;
+            Player.uiCounter++;
+            Actor player = cell.getActor();
+            player.setDefense(player.getDefense() + uiCounter);
 
         } else if (cell.getTileName().equals("key")) {
 

@@ -62,6 +62,22 @@ public class GameMap {
                     skeletonCell.setType(CellType.FLOOR);
                     skeleton.move(coordinate.getX(), coordinate.getY());
                     nextSkeletonCell.setType(CellType.SKELETON);
+                } else {
+                    if (nextSkeletonCell == getPlayer().getCell()) {
+                        int enemyAttack = skeleton.getAttack();
+
+                        int playerArmor = getPlayer().getDefense();
+                        int playerHealth = getPlayer().getHealth();
+                        int damageToPlayer = playerArmor - enemyAttack;
+                        if (damageToPlayer < 0) {
+                            getPlayer().setHealth(playerHealth+damageToPlayer);
+                            System.out.println("Damage to player: " + (damageToPlayer));
+                        } else {
+                            getPlayer().setHealth(playerHealth-damageToPlayer);
+                            System.out.println("Damage to player: " + (damageToPlayer));
+                        }
+
+                    }
                 }
             } else {
                 skeleton.getCell().setActor(null);
@@ -84,6 +100,22 @@ public class GameMap {
                     ghostCell.setType(CellType.FLOOR);
                     ghost.move(coordinate.getX(), coordinate.getY());
                     nextGhostCell.setType(CellType.GHOST);
+                } else {
+                    if (nextGhostCell == getPlayer().getCell()) {
+                        int enemyAttack = ghost.getAttack();
+
+                        int playerArmor = getPlayer().getDefense();
+                        int playerHealth = getPlayer().getHealth();
+                        int damageToPlayer = playerArmor - enemyAttack;
+                        if (damageToPlayer < 0) {
+                            getPlayer().setHealth(playerHealth+damageToPlayer);
+                            System.out.println("Damage to player: " + (damageToPlayer));
+                        } else {
+                            getPlayer().setHealth(playerHealth-damageToPlayer);
+                            System.out.println("Damage to player: " + (damageToPlayer));
+                        }
+
+                    }
                 }
             } else {
                 ghost.getCell().setActor(null);
@@ -130,7 +162,11 @@ public class GameMap {
 
         int playerPossibleDamage = playerAttack - enemyDefense;
         if (enemyHealth > 0) {
-            enemyPosition.getActor().setHealth(enemyHealth - playerPossibleDamage);
+            if (playerPossibleDamage > 0) {
+                enemyPosition.getActor().setHealth(enemyHealth - playerPossibleDamage);
+            } else {
+                enemyPosition.getActor().setHealth(enemyHealth + playerPossibleDamage);
+            }
         } else {
             enemyPosition.getActor().setDead(true);
             enemyPosition.setType(CellType.FLOOR);
@@ -138,6 +174,5 @@ public class GameMap {
 
         System.out.println("Enemy Stats:" + enemyHealth +" "+ enemyAttack +" "+ enemyDefense);
         System.out.println("Player Stats:" + playerHealth +" "+ playerAttack +" "+ playerDefense);
-        System.out.println(enemyPosition.getType());
     }
 }

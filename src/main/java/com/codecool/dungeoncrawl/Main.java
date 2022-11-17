@@ -148,6 +148,6 @@ public class Main extends Application {
                 }
             }
         }
-        healthLabel.setText("" + map.getPlayer().getHealth());
+//        healthLabel.setText("" + map.getPlayer().getHealth());
     }
 }
