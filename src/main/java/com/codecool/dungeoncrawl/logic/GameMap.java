@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
@@ -49,33 +50,47 @@ public class GameMap {
     }
 
     public void moveSkeleton() {
+        Actor selectedSkeleton = null;
         for (Skeleton skeleton : skeletons) {
-            Coordinate coordinate = new Coordinate();
-            coordinate.setX((int) getMoveDirection());
-            coordinate.setY((int) getMoveDirection());
-            Cell skeletonCell = skeleton.getCell();
-            Cell nextSkeletonCell = skeletonCell.getNeighbor(coordinate.getX(), coordinate.getY());
-            if (skeleton.isAllowedOnTile(nextSkeletonCell)) {
-                skeletonCell.setType(CellType.FLOOR);
-                skeleton.move(coordinate.getX(), coordinate.getY());
-                nextSkeletonCell.setType(CellType.SKELETON);
+            if (!skeleton.isDead()) {
+                Coordinate coordinate = new Coordinate();
+                coordinate.setX((int) getMoveDirection());
+                coordinate.setY((int) getMoveDirection());
+                Cell skeletonCell = skeleton.getCell();
+                Cell nextSkeletonCell = skeletonCell.getNeighbor(coordinate.getX(), coordinate.getY());
+                if (skeleton.isAllowedOnTile(nextSkeletonCell)) {
+                    skeletonCell.setType(CellType.FLOOR);
+                    skeleton.move(coordinate.getX(), coordinate.getY());
+                    nextSkeletonCell.setType(CellType.SKELETON);
+                }
+            } else {
+                skeleton.getCell().setActor(null);
+                selectedSkeleton = skeleton;
             }
         }
+        skeletons.remove(selectedSkeleton);
     }
 
     public void moveGhost() {
+        Actor selectedGhost = null;
         for (Ghost ghost : ghosts) {
-            Coordinate coordinate = new Coordinate();
-            coordinate.setX((int) getMoveDirection());
-            coordinate.setY((int) getMoveDirection());
-            Cell ghostCell = ghost.getCell();
-            Cell nextGhostCell = ghostCell.getNeighbor(coordinate.getX(), coordinate.getY());
-            if (ghost.isAllowedOnTile(nextGhostCell)) {
-                ghostCell.setType(CellType.FLOOR);
-                ghost.move(coordinate.getX(), coordinate.getY());
-                nextGhostCell.setType(CellType.GHOST);
+            if (!ghost.isDead()) {
+                Coordinate coordinate = new Coordinate();
+                coordinate.setX((int) getMoveDirection());
+                coordinate.setY((int) getMoveDirection());
+                Cell ghostCell = ghost.getCell();
+                Cell nextGhostCell = ghostCell.getNeighbor(coordinate.getX(), coordinate.getY());
+                if (ghost.isAllowedOnTile(nextGhostCell)) {
+                    ghostCell.setType(CellType.FLOOR);
+                    ghost.move(coordinate.getX(), coordinate.getY());
+                    nextGhostCell.setType(CellType.GHOST);
+                }
+            } else {
+                ghost.getCell().setActor(null);
+                selectedGhost = ghost;
             }
         }
+        ghosts.remove(selectedGhost);
     }
 
     private static double getMoveDirection() {
@@ -96,6 +111,10 @@ public class GameMap {
         return nextCell.getType().equals(CellType.GHOST) || nextCell.getType().equals(CellType.SKELETON);
     }
 
+    public Actor getEnemy(Cell nextCell) {
+        return nextCell.getActor();
+    }
+
     public boolean isDoor(Cell nextCell) {
         return nextCell.getType().equals(CellType.DOOR);
     }
@@ -114,9 +133,11 @@ public class GameMap {
             enemyPosition.getActor().setHealth(enemyHealth - playerPossibleDamage);
         } else {
             enemyPosition.getActor().setDead(true);
+            enemyPosition.setType(CellType.FLOOR);
         }
 
         System.out.println("Enemy Stats:" + enemyHealth +" "+ enemyAttack +" "+ enemyDefense);
         System.out.println("Player Stats:" + playerHealth +" "+ playerAttack +" "+ playerDefense);
+        System.out.println(enemyPosition.getType());
     }
 }
