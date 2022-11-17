@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    GridPane ui = new GridPane();
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -31,14 +32,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        GridPane ui = new GridPane();
-        ui.setPrefWidth(200);
+        ui.setPrefWidth(100);
         ui.setPadding(new Insets(10));
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
-        ui.add(new Label("Key"), 0, 1);
-        ui.add(key, 1, 1);
+        ui.add(new Label("Inventory:"), 0,1);
 
         BorderPane borderPane = new BorderPane();
 
@@ -60,6 +59,7 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 Cell nextCell = playerActualCell.getNeighbor(0, -1);
+                Player.pickUp(playerActualCell, ui);
                 if (map.isOnAllowedTile(nextCell)) {
                     map.getPlayer().move(0, -1);
                 }
@@ -67,12 +67,14 @@ public class Main extends Application {
                 break;
             case DOWN:
                 nextCell = playerActualCell.getNeighbor(0, 1);
+                Player.pickUp(playerActualCell, ui);
                 if (map.isOnAllowedTile(nextCell)) {
                     map.getPlayer().move(0, 1);
                 }
                 refresh();
                 break;
             case LEFT:
+                Player.pickUp(playerActualCell, ui);
                 nextCell = playerActualCell.getNeighbor(-1, 0);
                 if (map.isOnAllowedTile(nextCell)) {
                     map.getPlayer().move(-1, 0);
@@ -80,6 +82,7 @@ public class Main extends Application {
                 refresh();
                 break;
             case RIGHT:
+                Player.pickUp(playerActualCell, ui);
                 nextCell = playerActualCell.getNeighbor(1, 0);
                 if (map.isOnAllowedTile(nextCell)) {
                     map.getPlayer().move(1,0);
