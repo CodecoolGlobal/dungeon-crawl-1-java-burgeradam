@@ -58,7 +58,7 @@ public class GameMap {
                 coordinate.setY((int) getMoveDirection());
                 Cell skeletonCell = skeleton.getCell();
                 Cell nextSkeletonCell = skeletonCell.getNeighbor(coordinate.getX(), coordinate.getY());
-                if (skeleton.isAllowedOnTile(nextSkeletonCell)) {
+                if (skeleton.isAllowedOnTile(nextSkeletonCell)  && nextSkeletonCell.getType().KEY != CellType.KEY ) {
                     skeletonCell.setType(CellType.FLOOR);
                     skeleton.move(coordinate.getX(), coordinate.getY());
                     nextSkeletonCell.setType(CellType.SKELETON);
