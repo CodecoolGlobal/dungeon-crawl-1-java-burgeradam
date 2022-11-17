@@ -107,7 +107,13 @@ public class Main extends Application {
             if (map.isEnemy(nextCell)) {
                 map.fight(nextCell, playerActualCell);
             }
-            if (map.isDoor(nextCell)) {
+            if ( (map.isDoor(nextCell)) && (map.getPlayer().getKey() != null) ) {
+                if (!map.getPlayer().getKey().isKeyUsed()) {
+                    map.getPlayer().getKey().useKey();
+                    map = MapLoader.loadMap();
+                }
+            }
+        }
 /*
                 Stage messageWindow = new Stage();
 
@@ -129,9 +135,7 @@ public class Main extends Application {
                 messageWindow.show();
 ű
 */
-                map = MapLoader.loadMap();
-            }
-        }
+
         refresh();
     }
 
