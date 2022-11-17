@@ -1,6 +1,6 @@
 package com.codecool.dungeoncrawl.logic.items;
 
-import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Healer extends Items{
 
@@ -15,26 +15,27 @@ public class Healer extends Items{
     }
 
 
-    public void heal(int life, Player player) {
+    public int heal(int life) {
         if (healType.equals("heal1")){
             if (life + 1 < 10){
-               player.setHealth(life + 2);
+               return life + 1;
             }else {
                 life = 10;
-                player.setHealth(life);
+                return life;
             }
         }
         if(healType.equals("heal2")){
             if(life + 3 < 10){
-                player.setHealth(life + 3);
+                return life + 3;
             } else {
                 life = 10;
-                player.setHealth(life);
+                return life;
             }
         }
         if(healType.equals("heal3")){
 
-            player.setHealth(10);
+            return 10;
         }
+        return life;
     }
 }

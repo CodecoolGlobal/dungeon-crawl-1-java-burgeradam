@@ -89,6 +89,8 @@ public class MapLoader {
         String[][] mapStringMatrix = new String[4][mapRowCount];
         String fileName = "";
         for (int position: mapPosition.keySet()) {
+            boolean keyPlaced = false;
+
             if (playersMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "p" + ".txt";
             else if (doorMap == mapPosition.get(position)) fileName = mapPosition.get(position).getFilePrefix() + "d" + ".txt";
                     else fileName = mapPosition.get(position).getFilePrefix() + (random.nextInt(mapVariationsCount) + 1) + ".txt";
@@ -102,6 +104,13 @@ public class MapLoader {
                     if (str.length() < halfWidth) {
                         str = Utils.addSpacesToString(str, halfWidth);
                     }
+                    if ( !(playersMap == mapPosition.get(position)) && !(doorMap == mapPosition.get(position)) && !keyPlaced && (str.contains("."))) {  // Randomly placing a key
+                        int charIndex = random.nextInt(str.length());
+                        while (str.charAt(charIndex) != '.') charIndex = random.nextInt(str.length());
+                        str = str.substring(0, charIndex) + 'k' + str.substring(charIndex + 1);
+                        keyPlaced = true;
+                    }
+
                     mapStringMatrix[position][i] = str;
                     i++;
                 }

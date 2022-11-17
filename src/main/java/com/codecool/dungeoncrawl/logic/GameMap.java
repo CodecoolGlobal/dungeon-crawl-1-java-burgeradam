@@ -58,7 +58,7 @@ public class GameMap {
                 coordinate.setY((int) getMoveDirection());
                 Cell skeletonCell = skeleton.getCell();
                 Cell nextSkeletonCell = skeletonCell.getNeighbor(coordinate.getX(), coordinate.getY());
-                if (skeleton.isAllowedOnTile(nextSkeletonCell)) {
+                if (skeleton.isAllowedOnTile(nextSkeletonCell) && nextSkeletonCell.getType() != CellType.KEY ) {
                     skeletonCell.setType(CellType.FLOOR);
                     skeleton.move(coordinate.getX(), coordinate.getY());
                     nextSkeletonCell.setType(CellType.SKELETON);
@@ -96,7 +96,7 @@ public class GameMap {
                 coordinate.setY((int) getMoveDirection());
                 Cell ghostCell = ghost.getCell();
                 Cell nextGhostCell = ghostCell.getNeighbor(coordinate.getX(), coordinate.getY());
-                if (ghost.isAllowedOnTile(nextGhostCell)) {
+                if (ghost.isAllowedOnTile(nextGhostCell) && nextGhostCell.getType() != CellType.KEY) {
                     ghostCell.setType(CellType.FLOOR);
                     ghost.move(coordinate.getX(), coordinate.getY());
                     nextGhostCell.setType(CellType.GHOST);
@@ -152,11 +152,13 @@ public class GameMap {
     }
 
     public void fight(Cell enemyPosition, Cell playerPosition) {
-        int enemyHealth = enemyPosition.getActor().getHealth();
+        Actor enemy = enemyPosition.getActor();
+        Actor player = playerPosition.getActor();
+        int enemyHealth = enemy.getHealth();
         int enemyAttack = enemyPosition.getActor().getAttack();
         int enemyDefense = enemyPosition.getActor().getDefense();
 
-        int playerHealth = playerPosition.getActor().getHealth();
+        int playerHealth = player.getHealth();
         int playerAttack = playerPosition.getActor().getAttack();
         int playerDefense = playerPosition.getActor().getDefense();
 

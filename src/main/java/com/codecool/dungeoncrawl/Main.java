@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -80,20 +81,20 @@ public class Main extends Application {
             case UP:
                 moveToX = 0;
                 moveToY = -1;
-                Player.pickUp(playerActualCell, ui);
+                playerPlace.pickUp(playerActualCell, ui);
                 break;
             case DOWN:
-                Player.pickUp(playerActualCell, ui);
+                playerPlace.pickUp(playerActualCell, ui);
                 moveToX = 0;
                 moveToY = 1;
                 break;
             case LEFT:
-                Player.pickUp(playerActualCell, ui);
+                playerPlace.pickUp(playerActualCell, ui);
                 moveToX = -1;
                 moveToY = 0;
                 break;
             case RIGHT:
-                Player.pickUp(playerActualCell, ui);
+                playerPlace.pickUp(playerActualCell, ui);
                 moveToX = 1;
                 moveToY = 0;
                 break;
@@ -107,7 +108,13 @@ public class Main extends Application {
             if (map.isEnemy(nextCell)) {
                 map.fight(nextCell, playerActualCell);
             }
-            if (map.isDoor(nextCell)) {
+            if ( (map.isDoor(nextCell)) && (map.getPlayer().getKey() != null) ) {
+                if (!map.getPlayer().getKey().isKeyUsed()) {
+                    map.getPlayer().getKey().useKey();
+                    map = MapLoader.loadMap();
+                }
+            }
+        }
 /*
                 Stage messageWindow = new Stage();
 
@@ -129,9 +136,7 @@ public class Main extends Application {
                 messageWindow.show();
 ű
 */
-                map = MapLoader.loadMap();
-            }
-        }
+
         refresh();
     }
 
