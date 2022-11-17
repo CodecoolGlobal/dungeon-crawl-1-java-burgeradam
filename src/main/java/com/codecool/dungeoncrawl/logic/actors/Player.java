@@ -51,24 +51,26 @@ public class Player extends Actor {
             ui.add(new Label("key"), 0, uiCounter);
             uiCounter++;
 
-        } else if(cell.getTileName().equals("heal1")) {
-
-            Healer heal1 = new Healer("heal1");
-            this.setHealth(heal1.heal(Actor.getHealth()));
-            cell.setType(CellType.FLOOR);
-
-        } else if(cell.getTileName().equals("heal2")) {
-
-            Healer heal2 = new Healer("heal2");
-            this.setHealth(heal2.heal(Actor.getHealth()));
-            cell.setType(CellType.FLOOR);
-
-        }else if(cell.getTileName().equals("heal3")) {
-
-            Healer heal3 = new Healer("heal3");
-            this.setHealth(heal3.heal(Actor.getHealth()));
-            cell.setType(CellType.FLOOR);
         }
+
+//        } else if(cell.getTileName().equals("heal1")) {
+//
+//            Healer heal1 = new Healer("heal1");
+//            this.setHealth(heal1.heal(Actor.getHealth()));
+//            cell.setType(CellType.FLOOR);
+//
+//        } else if(cell.getTileName().equals("heal2")) {
+//
+//            Healer heal2 = new Healer("heal2");
+//            this.setHealth(heal2.heal(Actor.getHealth()));
+//            cell.setType(CellType.FLOOR);
+//
+//        }else if(cell.getTileName().equals("heal3")) {
+//
+//            Healer heal3 = new Healer("heal3");
+//            this.setHealth(heal3.heal(.getHealth()));
+//            cell.setType(CellType.FLOOR);
+//        }
 
 
     }

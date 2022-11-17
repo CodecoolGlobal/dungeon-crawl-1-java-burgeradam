@@ -120,11 +120,13 @@ public class GameMap {
     }
 
     public void fight(Cell enemyPosition, Cell playerPosition) {
-        int enemyHealth = enemyPosition.getActor().getHealth();
+        Actor enemy = enemyPosition.getActor();
+        Actor player = playerPosition.getActor();
+        int enemyHealth = enemy.getHealth();
         int enemyAttack = enemyPosition.getActor().getAttack();
         int enemyDefense = enemyPosition.getActor().getDefense();
 
-        int playerHealth = playerPosition.getActor().getHealth();
+        int playerHealth = player.getHealth();
         int playerAttack = playerPosition.getActor().getAttack();
         int playerDefense = playerPosition.getActor().getDefense();
 
