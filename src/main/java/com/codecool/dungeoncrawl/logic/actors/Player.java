@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Player extends Actor {
     private static int uiCounter = 2;
@@ -17,7 +16,7 @@ public class Player extends Actor {
     public Player(Cell cell) {
         super(cell);
         this.setHealth(10);
-        this.setAttack(1);
+        this.setAttack(2);
         this.setDefense(1);
     }
 

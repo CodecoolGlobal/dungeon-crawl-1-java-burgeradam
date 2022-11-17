@@ -104,7 +104,7 @@ public class Main extends Application {
             map.getPlayer().move(moveToX, moveToY);
         } else {
             if (map.isEnemy(nextCell)) {
-                map.fight(nextCell);
+                map.fight(nextCell, playerActualCell);
             }
             if (map.isDoor(nextCell)) {
 /*

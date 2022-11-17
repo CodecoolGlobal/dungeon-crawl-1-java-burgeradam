@@ -11,11 +11,14 @@ public abstract class Actor implements Drawable {
     private int attack;
 
     private int defense;
+
+    private boolean isDead;
+
     public Actor(Cell cell) {
         this.cell = cell;
         this.cell.setActor(this);
+        this.isDead = false;
     }
-
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
         cell.setActor(null);
@@ -60,6 +63,15 @@ public abstract class Actor implements Drawable {
     public int getY() {
         return cell.getY();
     }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
     public boolean isAllowedOnTile(Cell cell) {
         return !cell.getType().equals(CellType.WALL) &&
                 !cell.getType().equals(CellType.EMPTY) &&

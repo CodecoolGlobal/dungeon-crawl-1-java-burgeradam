@@ -100,8 +100,23 @@ public class GameMap {
         return nextCell.getType().equals(CellType.DOOR);
     }
 
-    public void fight(Cell enemyPosition) {
-        String name = enemyPosition.getType().getTileName();
-        System.out.println(name);
+    public void fight(Cell enemyPosition, Cell playerPosition) {
+        int enemyHealth = enemyPosition.getActor().getHealth();
+        int enemyAttack = enemyPosition.getActor().getAttack();
+        int enemyDefense = enemyPosition.getActor().getDefense();
+
+        int playerHealth = playerPosition.getActor().getHealth();
+        int playerAttack = playerPosition.getActor().getAttack();
+        int playerDefense = playerPosition.getActor().getDefense();
+
+        int playerPossibleDamage = playerAttack - enemyDefense;
+        if (enemyHealth > 0) {
+            enemyPosition.getActor().setHealth(enemyHealth - playerPossibleDamage);
+        } else {
+            enemyPosition.getActor().setDead(true);
+        }
+
+        System.out.println("Enemy Stats:" + enemyHealth +" "+ enemyAttack +" "+ enemyDefense);
+        System.out.println("Player Stats:" + playerHealth +" "+ playerAttack +" "+ playerDefense);
     }
 }
