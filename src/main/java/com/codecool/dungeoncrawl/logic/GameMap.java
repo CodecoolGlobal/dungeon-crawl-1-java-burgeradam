@@ -80,7 +80,7 @@ public class GameMap {
                 coordinate.setY((int) getMoveDirection());
                 Cell ghostCell = ghost.getCell();
                 Cell nextGhostCell = ghostCell.getNeighbor(coordinate.getX(), coordinate.getY());
-                if (ghost.isAllowedOnTile(nextGhostCell)) {
+                if (ghost.isAllowedOnTile(nextGhostCell) && nextGhostCell.getType() != CellType.KEY) {
                     ghostCell.setType(CellType.FLOOR);
                     ghost.move(coordinate.getX(), coordinate.getY());
                     nextGhostCell.setType(CellType.GHOST);
