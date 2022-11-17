@@ -1,6 +1,5 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Ghost;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.util.Coordinate;
@@ -43,32 +42,24 @@ public class GameMap {
         skeletons.add(skeleton);
     }
 
-    public boolean isAllowedOnTile(Cell cell) {
-        return !cell.getType().equals(CellType.WALL) &&
-                !cell.getType().equals(CellType.EMPTY) &&
-                !cell.getType().equals(CellType.WATER) &&
-                !cell.getType().equals(CellType.TREE) &&
-                !cell.getType().equals(CellType.DOOR) &&
-                !(cell.getActor() instanceof Skeleton &&
-                !(cell.getActor() instanceof Ghost));
-    }
-
     public void moveSkeleton() {
-        int minValue = -1;
-        int maxValue = 1;
         for (Skeleton skeleton : skeletons) {
             Coordinate coordinate = new Coordinate();
-            double moveDirection = Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
-            coordinate.setX((int) moveDirection);
-            moveDirection = Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
-            coordinate.setY((int) moveDirection);
+            coordinate.setX((int) getMoveDirection());
+            coordinate.setY((int) getMoveDirection());
             Cell skeletonCell = skeleton.getCell();
             Cell nextSkeletonCell = skeletonCell.getNeighbor(coordinate.getX(), coordinate.getY());
-            if (isAllowedOnTile(nextSkeletonCell)) {
+            if (skeleton.isAllowedOnTile(nextSkeletonCell)) {
                 skeletonCell.setType(CellType.FLOOR);
                 skeleton.move(coordinate.getX(), coordinate.getY());
             }
         }
+    }
+
+    private static double getMoveDirection() {
+        int minValue = -1;
+        int maxValue = 1;
+        return Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
     }
 
     public int getWidth() {

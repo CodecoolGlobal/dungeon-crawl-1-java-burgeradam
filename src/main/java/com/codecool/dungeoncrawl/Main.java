@@ -1,7 +1,6 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
@@ -16,10 +15,23 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
+    private class SkeletonThread extends Thread {
+        @Override
+        public void run() {
+            while (!Thread.currentThread().isInterrupted()) {
+                map.moveSkeleton();
+                refresh();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -54,6 +66,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+        SkeletonThread skeletonThread = new SkeletonThread();
+        skeletonThread.start();
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -61,7 +75,6 @@ public class Main extends Application {
         Cell playerActualCell = playerPlace.getCell();
         int moveToX = 0;
         int moveToY = 0;
-        map.moveSkeleton();
         switch (keyEvent.getCode()) {
             case UP:
                 moveToX = 0;
@@ -81,15 +94,14 @@ public class Main extends Application {
                 moveToY = 0;
                 break;
         }
-        Cell nextCell = playerActualCell.getNeighbor(moveToX,moveToY);
-        if (map.isAllowedOnTile(nextCell)) {
+        Cell nextCell = playerActualCell.getNeighbor(moveToX, moveToY);
+        if (playerPlace.isAllowedOnTile(nextCell)) {
             map.getPlayer().move(moveToX, moveToY);
-        }
-        else {
+        } else {
             if (map.isEnemy(nextCell)) {
 
             }
-            if (map.isDoor(nextCell)){
+            if (map.isDoor(nextCell)) {
 /*
                 Stage messageWindow = new Stage();
 
