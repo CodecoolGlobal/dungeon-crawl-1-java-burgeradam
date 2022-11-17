@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import java.util.ArrayList;
 
 public class Player extends Actor {
-    private static int uiCounter = 2;
+    private static int uiCounter = 4;
 
     private static ArrayList<Items> inventory = new ArrayList<>();
 
@@ -37,7 +37,7 @@ public class Player extends Actor {
             uiCounter++;
             Actor player = cell.getActor();
             player.setAttack(player.getAttack() + 1);
-            
+
 
         } else if (cell.getTileName().equals("shield")) {
             Items shield = new Shield();
@@ -46,7 +46,7 @@ public class Player extends Actor {
             ui.add(new Label("shield"), 0, uiCounter);
             Player.uiCounter++;
             Actor player = cell.getActor();
-            player.setDefense(player.getDefense() + uiCounter);
+            player.setDefense(player.getDefense() + 1);
 
         } else if (cell.getTileName().equals("key")) {
 
@@ -56,28 +56,25 @@ public class Player extends Actor {
             ui.add(new Label("key"), 0, uiCounter);
             uiCounter++;
 
+
+        } else if (cell.getTileName().equals("heal1")) {
+
+            Healer heal1 = new Healer("heal1");
+            this.setHealth(this.getHealth()+1);
+            cell.setType(CellType.FLOOR);
+
+        } else if (cell.getTileName().equals("heal2")) {
+
+            Healer heal2 = new Healer("heal2");
+            this.setHealth(this.getHealth()+2);
+            cell.setType(CellType.FLOOR);
+
+        } else if (cell.getTileName().equals("heal3")) {
+
+            Healer heal3 = new Healer("heal3");
+            this.setHealth(this.getHealth()+3);
+            cell.setType(CellType.FLOOR);
         }
-
-//        } else if(cell.getTileName().equals("heal1")) {
-//
-//            Healer heal1 = new Healer("heal1");
-//            this.setHealth(heal1.heal(Actor.getHealth()));
-//            cell.setType(CellType.FLOOR);
-//
-//        } else if(cell.getTileName().equals("heal2")) {
-//
-//            Healer heal2 = new Healer("heal2");
-//            this.setHealth(heal2.heal(Actor.getHealth()));
-//            cell.setType(CellType.FLOOR);
-//
-//        }else if(cell.getTileName().equals("heal3")) {
-//
-//            Healer heal3 = new Healer("heal3");
-//            this.setHealth(heal3.heal(.getHealth()));
-//            cell.setType(CellType.FLOOR);
-//        }
-
-
     }
 
     public Key getKey(){

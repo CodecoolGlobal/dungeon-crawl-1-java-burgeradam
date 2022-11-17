@@ -1,10 +1,8 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -41,6 +39,8 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label attackLabel = new Label();
+    Label defenseLabel = new Label();
     Label key = new Label();
 
     public static void main(String[] args) {
@@ -49,12 +49,16 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ui.setPrefWidth(100);
+        ui.setPrefWidth(105);
         ui.setPadding(new Insets(10));
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
-        ui.add(new Label("Inventory:"), 0,1);
+        ui.add(new Label("Attack: "), 0, 1);
+        ui.add(attackLabel, 1, 1);
+        ui.add(new Label("Armor: "), 0, 2);
+        ui.add(defenseLabel, 1, 2);
+        ui.add(new Label("Inventory:"), 0,3);
 
         BorderPane borderPane = new BorderPane();
 
@@ -75,6 +79,7 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         Player playerPlace = map.getPlayer();
         Cell playerActualCell = playerPlace.getCell();
+
         int moveToX = 0;
         int moveToY = 0;
         switch (keyEvent.getCode()) {
@@ -98,7 +103,6 @@ public class Main extends Application {
                 moveToX = 1;
                 moveToY = 0;
                 break;
-
         }
 
         Cell nextCell = playerActualCell.getNeighbor(moveToX, moveToY);
@@ -141,6 +145,7 @@ public class Main extends Application {
     }
 
     private void refresh() {
+
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
@@ -153,6 +158,8 @@ public class Main extends Application {
                 }
             }
         }
-//        healthLabel.setText("" + map.getPlayer().getHealth());
+        attackLabel.setText("" + map.getPlayer().getAttack());
+        healthLabel.setText("" + map.getPlayer().getHealth());
+        defenseLabel.setText("" + map.getPlayer().getDefense());
     }
 }
