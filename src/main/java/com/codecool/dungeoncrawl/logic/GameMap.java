@@ -58,6 +58,7 @@ public class GameMap {
             if (skeleton.isAllowedOnTile(nextSkeletonCell)) {
                 skeletonCell.setType(CellType.FLOOR);
                 skeleton.move(coordinate.getX(), coordinate.getY());
+                nextSkeletonCell.setType(CellType.SKELETON);
             }
         }
     }
@@ -72,6 +73,7 @@ public class GameMap {
             if (ghost.isAllowedOnTile(nextGhostCell)) {
                 ghostCell.setType(CellType.FLOOR);
                 ghost.move(coordinate.getX(), coordinate.getY());
+                nextGhostCell.setType(CellType.GHOST);
             }
         }
     }
@@ -98,9 +100,8 @@ public class GameMap {
         return nextCell.getType().equals(CellType.DOOR);
     }
 
-    public String fight(Cell cell) {
-        String name = cell.getType().name();
+    public void fight(Cell enemyPosition) {
+        String name = enemyPosition.getType().getTileName();
         System.out.println(name);
-        return name;
     }
 }

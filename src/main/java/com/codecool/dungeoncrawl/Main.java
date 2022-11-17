@@ -100,7 +100,7 @@ public class Main extends Application {
             map.getPlayer().move(moveToX, moveToY);
         } else {
             if (map.isEnemy(nextCell)) {
-
+                map.fight(nextCell);
             }
             if (map.isDoor(nextCell)) {
 /*
