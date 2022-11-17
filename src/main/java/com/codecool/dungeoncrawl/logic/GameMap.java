@@ -49,48 +49,37 @@ public class GameMap {
         ghosts.add(ghost);
     }
 
-    public void moveSkeleton() {
-        Actor selectedSkeleton = null;
-        for (Skeleton skeleton : skeletons) {
-            if (!skeleton.isDead()) {
-                Coordinate coordinate = new Coordinate();
-                coordinate.setX((int) getMoveDirection());
-                coordinate.setY((int) getMoveDirection());
-                Cell skeletonCell = skeleton.getCell();
-                Cell nextSkeletonCell = skeletonCell.getNeighbor(coordinate.getX(), coordinate.getY());
-                if (skeleton.isAllowedOnTile(nextSkeletonCell) && nextSkeletonCell.getType() != CellType.KEY ) {
-                    skeletonCell.setType(CellType.FLOOR);
-                    skeleton.move(coordinate.getX(), coordinate.getY());
-                    nextSkeletonCell.setType(CellType.SKELETON);
+    public void enemyMove(Class clazz) {
+        List<? extends Actor> enemyList = null;
+        if (clazz.equals(Skeleton.class)) {
+            enemyList = skeletons;
+        } else if (clazz.equals(Ghost.class)){
+            enemyList = ghosts;
+        } else {
+            System.out.println("not valid class for movement");
+        }
+        if (enemyList != null) {
+            Actor selectedEnemy = null;
+            for (Actor enemy : enemyList){
+                if (!enemy.isDead()) {
+                    Coordinate coordinate = new Coordinate();
+                    coordinate.setX((int) getMoveDirection());
+                    coordinate.setY((int) getMoveDirection());
+                    Cell enemyCell = enemy.getCell();
+                    Cell nextEnemyCell = enemyCell.getNeighbor(coordinate.getX(), coordinate.getY());
+                    if (nextEnemyCell.isAllowedOn() && nextEnemyCell.getType() != CellType.KEY ) {
+                        nextEnemyCell.setType(enemyCell.getType());
+                        enemyCell.setType(CellType.FLOOR);
+                        enemy.move(coordinate.getX(), coordinate.getY());
+                    }
+                } else {
+                    enemy.getCell().setActor(null);
+                    selectedEnemy = enemy;
+                    enemyList.remove(selectedEnemy);
+                    break;
                 }
-            } else {
-                skeleton.getCell().setActor(null);
-                selectedSkeleton = skeleton;
             }
         }
-        skeletons.remove(selectedSkeleton);
-    }
-
-    public void moveGhost() {
-        Actor selectedGhost = null;
-        for (Ghost ghost : ghosts) {
-            if (!ghost.isDead()) {
-                Coordinate coordinate = new Coordinate();
-                coordinate.setX((int) getMoveDirection());
-                coordinate.setY((int) getMoveDirection());
-                Cell ghostCell = ghost.getCell();
-                Cell nextGhostCell = ghostCell.getNeighbor(coordinate.getX(), coordinate.getY());
-                if (ghost.isAllowedOnTile(nextGhostCell) && nextGhostCell.getType() != CellType.KEY) {
-                    ghostCell.setType(CellType.FLOOR);
-                    ghost.move(coordinate.getX(), coordinate.getY());
-                    nextGhostCell.setType(CellType.GHOST);
-                }
-            } else {
-                ghost.getCell().setActor(null);
-                selectedGhost = ghost;
-            }
-        }
-        ghosts.remove(selectedGhost);
     }
 
     private static double getMoveDirection() {
