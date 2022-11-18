@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
 public abstract class Actor implements Drawable {
@@ -69,5 +70,16 @@ public abstract class Actor implements Drawable {
 
     public void setDead(boolean dead) {
         isDead = dead;
+    }
+
+    public boolean isAllowedOnTile(Cell cell) {
+        return !cell.getType().equals(CellType.WALL) &&
+                !cell.getType().equals(CellType.EMPTY) &&
+                !cell.getType().equals(CellType.WATER) &&
+                !cell.getType().equals(CellType.TREE) &&
+                !cell.getType().equals(CellType.DOOR) &&
+                !(cell.getActor() instanceof Skeleton) &&
+                !(cell.getActor() instanceof Ghost) &&
+                !(cell.getActor() instanceof Player);
     }
 }
